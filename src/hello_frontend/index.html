@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="hello_frontend/Assets/index.css">
+    <title>Motoko DApp</title>
+</head>
+<body>
+    <h1>Motoko DApp</h1>
+    
+    <!-- Form for registering a user account -->
+    <form id="registerForm">
+        <label for="account">Account:</label>
+        <input type="text" id="account" name="account">
+        <button type="submit">Register</button>
+    </form>
+
+    <!-- Form for depositing tokens -->
+    <form id="depositForm">
+        <label for="depositAccount">Account:</label>
+        <input type="text" id="depositAccount" name="depositAccount">
+        <label for="amount">Amount:</label>
+        <input type="number" id="amount" name="amount">
+        <button type="submit">Deposit</button>
+    </form>
+
+    <!-- Form for withdrawing tokens -->
+    <form id="withdrawForm">
+        <label for="withdrawAccount">Account:</label>
+        <input type="text" id="withdrawAccount" name="withdrawAccount">
+        <label for="withdrawAmount">Amount:</label>
+        <input type="number" id="withdrawAmount" name="withdrawAmount">
+        <button type="submit">Withdraw</button>
+    </form>
+
+    <!-- Form for getting user balance -->
+    <form id="getBalanceForm">
+        <label for="balanceAccount">Account:</label>
+        <input type="text" id="balanceAccount" name="balanceAccount">
+        <button type="submit">Get Balance</button>
+    </form>
+
+    <!-- Script to handle form submissions -->
+    <script>
+        async function registerUser(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const account = formData.get('account');
+
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ account })
+            });
+
+            const data = await response.json();
+            console.log(data);
+        }
+
+        async function depositTokens(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const account = formData.get('depositAccount');
+            const amount = formData.get('amount');
+
+            const response = await fetch('/deposit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ account, amount })
+            });
+
+            const data = await response.json();
+            console.log(data);
+        }
+
+        async function withdrawTokens(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const account = formData.get('withdrawAccount');
+            const amount = formData.get('withdrawAmount');
+
+            const response = await fetch('/withdraw', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ account, amount })
+            });
+
+            const data = await response.json();
+            console.log(data);
+        }
+
+        async function getBalance(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const account = formData.get('balanceAccount');
+
+            const response = await fetch(`/balance/${account}`);
+            const data = await response.json();
+            console.log(data);
+        }
+
+        document.getElementById('registerForm').addEventListener('submit', registerUser);
+        document.getElementById('depositForm').addEventListener('submit', depositTokens);
+        document.getElementById('withdrawForm').addEventListener('submit', withdrawTokens);
+        document.getElementById('getBalanceForm').addEventListener('submit', getBalance);
+    </script>
+</body>
+</html>
